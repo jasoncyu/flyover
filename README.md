@@ -476,3 +476,27 @@ emacs -batch -l flyover.el -l flycheck-overlay-test.el -f ert-run-tests-batch-an
 ## Author
 
 Mikael Konradsson <mikael.konradsson@outlook.com>
+
+## Floating popup display (fork extension)
+
+Install `posframe`, then enable the optional backend:
+
+```elisp
+(require 'flyover-posframe)
+(add-hook 'flyover-mode-hook
+          (lambda ()
+            (flyover-posframe-mode (if flyover-mode 1 -1))))
+```
+
+The popup shows diagnostics on the current line after Flyover's cursor
+debounce delay, without adding rows or changing buffer text. It hides during
+completion, after edits, on buffer switches, and when Flyover is disabled.
+Set `flyover-display-mode` to `show-only-on-request` to use
+`flyover-flash-error-at-point` instead of automatic display. Other overlay
+visibility policies are replaced by current-line display in this backend.
+Flyover's severity faces, checker filtering, and error IDs are retained;
+decorative overlay borders and icons are not used.
+
+Requires graphical Emacs with child-frame support. Terminal frames do not
+display a popup. Disable `flyover-posframe-mode` to restore regular overlays.
+The backend uses Flyover internals and may need adjustment after upstream updates.
